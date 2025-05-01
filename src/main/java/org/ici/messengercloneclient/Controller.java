@@ -15,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(Controller.class);
 
     @FXML
     private Button button_send;
@@ -39,14 +42,11 @@ public class Controller implements Initializable {
 
     public void setStage(Stage stage) {
         // Add close request handler
-        stage.setOnCloseRequest(event -> {
-            // Perform cleanup or ask for confirmation
-            handleCloseEvent();
-        });
+        stage.setOnCloseRequest(event -> handleCloseEvent());
     }
 
     private void handleCloseEvent() {
-        System.out.println("App is closing...");
+        LOGGER.info("App is closing...");
         this.client.sendMsg(this.client.getIpAddress() + ":" + this.client.getPort() + ": " + this.client.getName() + "->quit");
         this.client.closeResources();
     }
@@ -56,9 +56,9 @@ public class Controller implements Initializable {
 
         try {
             this.client = new Client(new Socket(args.getFirst(), Integer.parseInt(args.get(1))), this.vbox, args.get(2));
-            System.out.println("Connected to server");
+            LOGGER.info("Connected to server");
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
             throw new RuntimeException(e);
         }
 

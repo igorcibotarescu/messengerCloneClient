@@ -1,11 +1,14 @@
 package org.ici.messengercloneclient;
 
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
 
-public class Client implements Runnable{
+public class Client implements Runnable {
+    private static final Logger LOGGER = LogManager.getLogger(Client.class);
     private final Socket socket;
     private final BufferedReader bufferedReader;
     private final PrintWriter printWriter;
@@ -25,7 +28,7 @@ public class Client implements Runnable{
             this.name = name;
             this.printWriter.println(name);
         } catch (IOException e) {
-            System.err.println("Could not initialize client");
+            LOGGER.error("Could not initialize client");
             this.closeResources();
             throw new RuntimeException();
         }
@@ -53,7 +56,7 @@ public class Client implements Runnable{
                 this.bufferedReader.close();
             }
         } catch (IOException e) {
-            System.err.println("Error when closing resources");
+            LOGGER.error("Error when closing resources");
         }
     }
 
