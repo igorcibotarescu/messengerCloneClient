@@ -82,6 +82,34 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Maven Jar Plugin to set the Main Class -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.ici.messengercloneclient.Launcher</mainClass> <!-- Your main class -->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- Add Maven Shade Plugin to create a fat JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
